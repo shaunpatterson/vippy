@@ -5,24 +5,32 @@ Created on Aug 16, 2011
 '''
 from commands.Command import Command
 
+class NoOpCommand(Command):
+    pass
 
 class CountCommand(Command):
-    def __init__ (self, value, previous_cmd):
-        self.count = previous_cmd.count * 10 + int (value)
-        print ("CountCommand: The count is now %d" % (self.count)) 
+    def process_context (self, context):
+        self.count = context.prev_cmd.count * 10 + int (context.value)
+        print ("CountCommand: Process Context %d" % self.count)
         
-class PasteCommand(Command):  
+class CountableCommand(Command):
+    ''' A 'countable' command - something that can be run x number of times
+        or over x number of lines, etc. 
+        Ex: 5dd  (Delete is a countable command) '''
+    def process_context (self, context):
+        self.count = context.prev_cmd.count
+        if self.count <= 0:
+            self.count = 1
+    
+class PasteCommand(CountableCommand):
     def execute (self):
         print ("PrintCommand is executing on %d lines" % (self.count))
         
-class YankCommand(Command):
-    def __init__ (self, value, previous_cmd):
-        self.count = previous_cmd.count
-        if self.count <= 0:
-            self.count = 1
-          
+class YankCommand(CountableCommand):
     def execute (self):
         print ("YankCommand is executing on %d lines" % (self.count))
         
-    
+class DeleteCommand(CountableCommand):
+    def execute (self):
+        print ("DeleteCommand is executing on %d lines" % (self.count))
         
