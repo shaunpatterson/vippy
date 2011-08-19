@@ -16,18 +16,18 @@ class NormalMode(object):
 
     def __init__(self):
         
-        self.command_dispatcher = CommandDispatcher ()
+        self.commandDispatcher = CommandDispatcher ()
         
         
         # All commands that are countable
-        self.__countable_cmds = {
+        self.countable_cmds = {
                                 'p' : Transition (PasteCommand()),
                                 'y' : Transition (NoOpCommand(), { 'y' : Transition (YankCommand()) }), 
                                 'd' : Transition (NoOpCommand(), { 'd' : Transition (DeleteCommand()) }),
                                }
         
         # Set up the initial state transitions
-        self.__initial_state = {  
+        self.initialState = {  
                                 '0' : RecursiveTransition (CountCommand ()),
                                 '1' : RecursiveTransition (CountCommand ()),
                                 '2' : RecursiveTransition (CountCommand ()),
@@ -39,7 +39,7 @@ class NormalMode(object):
                                 '8' : RecursiveTransition (CountCommand ()),
                                 '9' : RecursiveTransition (CountCommand ()),
                               }
-        self.__initial_state.update(self.__countable_cmds)
+        self.initialState.update(self.countable_cmds)
     
         self.reset ()
         
@@ -51,7 +51,7 @@ class NormalMode(object):
         return result
     
     
-    def __next_state (self, transition):
+    def nextState (self, transition):
         # This feels like a hack. There's got to be a way of defining the 
         #  transition recursively
         #
@@ -61,30 +61,30 @@ class NormalMode(object):
         if isinstance (transition, RecursiveTransition):
             return
         
-        self.__current_state = transition.next_state
-        if (self.__current_state == None):
+        self.currentState = transition.nextState
+        if (self.currentState == None):
             self.reset ()
    
    
-    def handle_key (self, key):
+    def handleKey (self, key):
         ''' Process the next key and return the resulting command (if any) '''
         cmd = None
         
-        if (key in self.__current_state):
+        if (key in self.currentState):
             # Grab the transition
-            transition = self.__current_state [key]
+            transition = self.currentState [key]
             cmd = transition.value
            
             # Decorate the command 
-            cmd.process_context (Context (key, self.__previous_cmd))
+            cmd.processContext (Context (key, self.previousCmd))
             
             if transition.is_leaf ():
                 # Last state for the sequence.  Dispatch and reset
-                self.command_dispatcher.dispatch (cmd)              
+                self.commandDispatcher.dispatch (cmd)              
                 self.reset ()  
             else:
-                self.__previous_cmd = cmd
-                self.__next_state (transition)
+                self.previousCmd = cmd
+                self.nextState (transition)
                 
         else:
             print ("%s is not in the current mapping" % (key))
@@ -93,6 +93,6 @@ class NormalMode(object):
         return cmd
     
     def reset (self):
-        self.__current_state = self.__initial_state
-        self.__previous_cmd = Command ()
+        self.currentState = self.initialState
+        self.previousCmd = Command ()
         print ("Reset!")

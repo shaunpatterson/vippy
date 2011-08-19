@@ -10,8 +10,8 @@ class ListCommandDispatcher(CommandDispatcher):
          it appends the commands to a command list '''
     
     def __init__ (self):
-        self.cmd_list = []
+        self.commandList = []
         
     def dispatch (self, cmd):
-        self.cmd_list.append (cmd)
+        self.commandList.append (cmd)
             

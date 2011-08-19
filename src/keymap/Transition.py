@@ -5,12 +5,12 @@ Created on Aug 16, 2011
 '''
 
 class Transition(object):
-    def __init__(self, value=None, next_state=None):
+    def __init__(self, value=None, nextState=None):
         self.value = value
-        self.next_state = next_state
+        self.nextState = nextState
     
     def is_leaf (self):
-        return (self.next_state == None)
+        return (self.nextState == None)
         
 class RecursiveTransition(Transition):
     def __init__(self, value=None):

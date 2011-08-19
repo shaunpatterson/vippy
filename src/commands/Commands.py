@@ -9,16 +9,16 @@ class NoOpCommand(Command):
     pass
 
 class CountCommand(Command):
-    def process_context (self, context):
-        self.count = context.prev_cmd.count * 10 + int (context.value)
+    def processContext (self, context):
+        self.count = context.previousCmd.count * 10 + int (context.value)
         print ("CountCommand: Process Context %d" % self.count)
         
 class CountableCommand(Command):
     ''' A 'countable' command - something that can be run x number of times
         or over x number of lines, etc. 
         Ex: 5dd  (Delete is a countable command) '''
-    def process_context (self, context):
-        self.count = context.prev_cmd.count
+    def processContext (self, context):
+        self.count = context.previousCmd.count
         if self.count <= 0:
             self.count = 1
     
