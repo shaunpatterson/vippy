@@ -3,7 +3,10 @@ Created on Aug 16, 2011
 
 @author: shaun
 '''
+import logging
 from commands.Command import Command
+
+logger = logging.getLogger ()
 
 class NoOpCommand(Command):
     pass
@@ -11,7 +14,7 @@ class NoOpCommand(Command):
 class CountCommand(Command):
     def processContext (self, context):
         self.count = context.previousCmd.count * 10 + int (context.value)
-        print ("CountCommand: Process Context %d" % self.count)
+        logger.debug ("processContext %d" % self.count)
         
 class CountableCommand(Command):
     ''' A 'countable' command - something that can be run x number of times
@@ -24,13 +27,13 @@ class CountableCommand(Command):
     
 class PasteCommand(CountableCommand):
     def execute (self):
-        print ("PrintCommand is executing on %d lines" % (self.count))
+        logger.debug ("executing on {} lines", self.count)
         
 class YankCommand(CountableCommand):
     def execute (self):
-        print ("YankCommand is executing on %d lines" % (self.count))
+        logger.debug ("executing on %d lines" % self.count)
         
 class DeleteCommand(CountableCommand):
     def execute (self):
-        print ("DeleteCommand is executing on %d lines" % (self.count))
+        logger.debug ("executing on {} lines".format (self.count))
         

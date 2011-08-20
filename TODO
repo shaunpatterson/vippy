@@ -1,0 +1,28 @@
+This should be a very very very long list:
+
+
+Commands:
+-----------------------------------------------
+Spec out various "modes"
+   Command Mode, Visual Mode, Ex Mode
+Repeatable Commands / Non-repeatable commands
+Movement commands
+Macro Command recording
+Undo
+
+
+Editor 
+-----------------------------------------------
+Cursor position
+
+
+File Service
+  Open/Close/Write files
+
+Selection Service
+  Start 
+
+Editor View
+-----------------------------------------------
+Implement terminal mode (curses library?)
+
