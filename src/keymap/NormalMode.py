@@ -5,13 +5,11 @@ Created on Aug 16, 2011
 '''
 
 
-from commands.Command import Command
-
+from commands.Commands import PasteCommand, CountCommand, YankCommand, \
+    DeleteCommand, NoOpCommand
 from keymap.Mode import Mode
 from keymap.Transition import Transition, RecursiveTransition
-from commands.Commands import PasteCommand, CountCommand, YankCommand, DeleteCommand,\
-    NoOpCommand
-from commands.Context import Context
+
 
 class NormalMode (Mode):
 
