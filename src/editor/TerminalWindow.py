@@ -29,9 +29,9 @@ class TerminalWindow(Window):
             super().move (x, y)
             self.win.mvwin (y, x)
         except:
-            logger.fatal ("Error moving terminal window ({},{})".format (x, y))
-            sys.stderr.write ("{}, {}".format (x, y))
-            raise
+            # This'll throw exceptions when the window is not of the correct size, 
+            #  not initialized, etc
+            pass
             
         
     @abc.abstractmethod

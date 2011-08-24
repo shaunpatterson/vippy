@@ -14,5 +14,7 @@ class BufferWindow(TerminalWindow):
         self.model = model
 
     def repaint (self):
+        self.win.clear ()
+        self.win.box ()
         self.win.addstr (0, 0, "Buffer Window", curses.A_STANDOUT)
         self.win.refresh ()

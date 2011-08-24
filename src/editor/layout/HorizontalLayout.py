@@ -29,6 +29,7 @@ class HorizontalLayout(Layout):
         ''' Move the layout to a specific x y position '''
         self.x = x
         self.y = y
+        self.reposition (x, y)
         
     def resize (self, width, height):
         ''' Resize this layout and then reposition everything inside '''

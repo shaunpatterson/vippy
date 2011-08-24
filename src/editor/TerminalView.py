@@ -4,16 +4,16 @@ Created on Aug 20, 2011
 @author: shaun
 '''
 
-import curses
-import curses.wrapper
-from editor.terminal.TabsWindow import TabsWindow
-from editor.StatusBar import StatusBar
-from editor.terminal.StatusWindow import StatusWindow
+from editor.CommandBar import CommandBar
 from editor.LayoutManager import LayoutManager
+from editor.StatusBar import StatusBar
+from editor.layout.HorizontalLayout import HorizontalLayout
 from editor.terminal.BufferWindow import BufferWindow
 from editor.terminal.CommandBarWindow import CommandBarWindow
-from editor.CommandBar import CommandBar
-from editor.layout.HorizontalLayout import HorizontalLayout
+from editor.terminal.StatusWindow import StatusWindow
+from editor.terminal.TabsWindow import TabsWindow
+import curses
+import curses.wrapper
 
 class TerminalView(object):
     def __init__(self):
@@ -22,8 +22,13 @@ class TerminalView(object):
         # Tab setup
         self.tabsWindow = TabsWindow (['test1', 'test2'], 1)
         
-        # Buffer window setup
-        self.bufferWindow = BufferWindow (None)
+        # Buffer windows setup
+        self.bufferLayout = HorizontalLayout ()
+        self.bufferWindow1 = BufferWindow (None)
+        self.bufferWindow2 = BufferWindow (None)
+        self.bufferLayout.add (self.bufferWindow1)
+        self.bufferLayout.add (self.bufferWindow2)
+        self.bufferLayout.move (0, 0)
         
         # Status bar setup
         self.statusBar = StatusBar ()
@@ -35,13 +40,14 @@ class TerminalView(object):
  
         self.layout = HorizontalLayout ()
         self.layout.add (self.tabsWindow)
-        self.layout.add (self.bufferWindow)
+        self.layout.add (self.bufferLayout)
         self.layout.add (self.statusBarWindow)
         self.layout.add (self.commandBarWindow)
         
         self.layout.move (0, 0)
         self.layout.resize (self.screenWidth, self.screenHeight)
         
+        #self.resize ()
         self.repaint()
         
     def __del__ (self):
@@ -59,7 +65,8 @@ class TerminalView(object):
         self.screen.clear ()
         self.screen.refresh ()
         self.tabsWindow.repaint ()
-        self.bufferWindow.repaint ()
+        self.bufferWindow1.repaint ()
+        self.bufferWindow2.repaint ()
         self.statusBarWindow.repaint ()
         self.commandBarWindow.repaint ()
         

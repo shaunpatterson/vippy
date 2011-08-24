@@ -1,4 +1,0 @@
-
-
-class CommandExecutionException (Exception):
-    pass
