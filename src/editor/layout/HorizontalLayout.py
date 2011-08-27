@@ -13,8 +13,9 @@ class HorizontalLayout(Layout):
     ''' HorizontalLayout is a variable size layout that stacks contained
          layouts horizontally on top of one another '''
     
-    def __init__(self):
+    def __init__(self, layouts = []):
         super().__init__ ()
+        self.layouts.extend (layouts)
         
     def resize (self, width, height):
         ''' Resize this layout and then reposition everything inside '''

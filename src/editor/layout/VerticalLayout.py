@@ -9,13 +9,10 @@ class VerticalLayout(Layout):
     ''' VerticalLayout is a variable size layout that aligns
         layouts vertically from left to right '''
     
-    def __init__(self):
+    def __init__(self, layouts=[]):
         super().__init__ ()
-        self.layouts = []
-        self.width = 0
-        self.height = 0
-        self.x = 0
-        self.y = 0
+        self.layouts.extend (layouts)
+        
         
     def resize (self, width, height):
         ''' Resize this layout and then reposition everything inside '''

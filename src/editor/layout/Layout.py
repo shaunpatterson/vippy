@@ -27,11 +27,8 @@ class Layout(metaclass=ABCMeta):
         self.y = y
         self.reposition (x, y)
         
-    def reposition (self, x, y):
-        ''' Reposition everything in the layout according to a 
-             new x,y position for the layout '''
-        xOffset = x
-        yOffset = y
+    def repaint (self):
+        ''' Traverse through the entire layout and paint each '''
         for layout in self.layouts:
-            layout.move (xOffset, yOffset)
-            yOffset = yOffset + layout.height
+            layout.repaint ()
+        
