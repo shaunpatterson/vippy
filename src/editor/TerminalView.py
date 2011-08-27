@@ -14,22 +14,32 @@ from editor.terminal.StatusWindow import StatusWindow
 from editor.terminal.TabsWindow import TabsWindow
 import curses
 import curses.wrapper
+from editor.layout.VerticalLayout import VerticalLayout
 
 class TerminalView(object):
     def __init__(self):
         self.initializeScreen ()
         
         # Tab setup
-        self.tabsWindow = TabsWindow (['test1', 'test2'], 1)
+        self.tabsWindow = TabsWindow (['tab test1', 'tab test2'], 1)
         
         # Buffer windows setup
         self.bufferLayout = HorizontalLayout ()
-        self.bufferWindow1 = BufferWindow (None)
-        self.bufferWindow2 = BufferWindow (None)
-        self.bufferLayout.add (self.bufferWindow1)
-        self.bufferLayout.add (self.bufferWindow2)
-        self.bufferLayout.move (0, 0)
         
+        self.bufferWindowLeftTop = BufferWindow (None)
+        self.bufferWindowLeftBottom = BufferWindow (None)
+        self.bufferWindowRight = BufferWindow (None)
+    
+        self.horizontalLeft = HorizontalLayout ()
+        self.horizontalLeft.add (self.bufferWindowLeftTop)
+        self.horizontalLeft.add (self.bufferWindowLeftBottom)
+        
+        self.verticalSplit = VerticalLayout ()
+        self.verticalSplit.add (self.horizontalLeft)
+        self.verticalSplit.add (self.bufferWindowRight)
+        
+        self.bufferLayout.add (self.verticalSplit)
+    
         # Status bar setup
         self.statusBar = StatusBar ()
         self.statusBarWindow = StatusWindow (self.statusBar, 1)
@@ -65,8 +75,9 @@ class TerminalView(object):
         self.screen.clear ()
         self.screen.refresh ()
         self.tabsWindow.repaint ()
-        self.bufferWindow1.repaint ()
-        self.bufferWindow2.repaint ()
+        self.bufferWindowLeftTop.repaint ()
+        self.bufferWindowLeftBottom.repaint ()
+        self.bufferWindowRight.repaint ()
         self.statusBarWindow.repaint ()
         self.commandBarWindow.repaint ()
         

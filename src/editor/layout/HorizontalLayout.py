@@ -15,21 +15,6 @@ class HorizontalLayout(Layout):
     
     def __init__(self):
         super().__init__ ()
-        self.layouts = []
-        self.width = 0
-        self.height = 0
-        self.x = 0
-        self.y = 0
-        
-    def add (self, layout):
-        ''' Add a Layout or Window object to this layout '''
-        self.layouts.append (layout)
-        
-    def move (self, x, y):
-        ''' Move the layout to a specific x y position '''
-        self.x = x
-        self.y = y
-        self.reposition (x, y)
         
     def resize (self, width, height):
         ''' Resize this layout and then reposition everything inside '''
@@ -38,7 +23,6 @@ class HorizontalLayout(Layout):
 
         self._calculateInternalDimensions (width, height)
         self.reposition (self.x, self.y)
-
 
     def reposition (self, x, y):
         ''' Reposition everything in the layout according to a 

@@ -6,6 +6,7 @@ Created on Aug 21, 2011
 import unittest
 from editor.layout.HorizontalLayout import HorizontalLayout
 from editor.Window import Window
+from editor.layout.VerticalLayout import VerticalLayout
 
 class LayoutTests(unittest.TestCase):
 
@@ -89,7 +90,7 @@ class LayoutTests(unittest.TestCase):
         
         (variableWidth, variableHeight) = hLayout.isVariableSize()
         self.assertEqual (True, variableWidth)
-        self.assertEqual (False, variableHeight)
+        self.assertEqual (True, variableHeight)
 
     def testSimpleHorizonalLayout (self):
         mainLayout = HorizontalLayout ()
@@ -143,7 +144,6 @@ class LayoutTests(unittest.TestCase):
         mainLayout.add (bufferLayout)
         mainLayout.add (commandBar)
         
-        mainLayout.move (0, 0) 
         mainLayout.resize (100, 16)
 
         self.assertEqual (100, mainLayout.width)
@@ -217,6 +217,68 @@ class LayoutTests(unittest.TestCase):
         self.assertEqual (10, buffer2.y)
         self.assertEqual (0, commandBar.x)
         self.assertEqual (15, commandBar.y)
+    
+    
+    def testHorizontalAndVerticalLayout1 (self):
+        ''' Essentially make a buffer layout with:
+          2 horizonal layouts on the left and one
+          vertical layout on the right:
+
+          -------------------------
+          |           |           |
+          |           |           |
+          |           |           |
+          |-----------|           |
+          |           |           |
+          |           |           |
+          |           |           |
+          |-----------|-----------|  '''
+          
+           
+        mainLayout = HorizontalLayout ()
+       
+        
+        horizontalLeft = HorizontalLayout ()
+        bufferLeftTop = LayoutTests.TestWindow ()
+        bufferLeftBottom = LayoutTests.TestWindow ()
+        horizontalLeft.add (bufferLeftTop)
+        horizontalLeft.add (bufferLeftBottom)
+
+        verticalSplit = VerticalLayout ()
+        bufferRight = LayoutTests.TestWindow ()
+        verticalSplit.add (horizontalLeft)
+        verticalSplit.add (bufferRight)
+
+        tabWindow = LayoutTests.TestWindow (1)
+        commandBar = LayoutTests.TestWindow (1)
+        
+        mainLayout.add (tabWindow)
+        mainLayout.add (verticalSplit)
+        mainLayout.add (commandBar)
+        
+        mainLayout.move (0, 0)
+        mainLayout.resize (100, 16)
+        
+        self.assertEqual (1, tabWindow.height)
+        self.assertEqual (1, commandBar.height)
+        self.assertEqual (14, verticalSplit.height)
+        self.assertEqual (14, bufferRight.height)
+        self.assertEqual (14/2, bufferLeftTop.height)
+        self.assertEqual (14/2, bufferLeftBottom.height)
+
+        self.assertEqual (0, tabWindow.x)
+        self.assertEqual (0, tabWindow.y)
+        self.assertEqual (0, verticalSplit.x)
+        self.assertEqual (1, verticalSplit.y)
+        self.assertEqual (0, commandBar.x)
+        self.assertEqual (15, commandBar.y)
+
+        self.assertEqual (0, bufferLeftTop.x)
+        self.assertEqual (1, bufferLeftTop.y)
+        self.assertEqual (0, bufferLeftBottom.x)
+        self.assertEqual (8, bufferLeftBottom.y)
+        self.assertEqual (100/2, bufferRight.x)
+        self.assertEqual (1, bufferRight.y)
         
         
 if __name__ == "__main__":
