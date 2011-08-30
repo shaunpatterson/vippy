@@ -10,10 +10,10 @@ from editor.LayoutManager import LayoutManager
 from editor.StatusBar import StatusBar
 from editor.layout.HorizontalLayout import HorizontalLayout
 from editor.layout.VerticalLayout import VerticalLayout
-from editor.terminal.BufferWindow import BufferWindow
-from editor.terminal.CommandBarWindow import CommandBarWindow
-from editor.terminal.StatusWindow import StatusWindow
-from editor.terminal.TabsWindow import TabsWindow
+from editor.terminal.BufferTermWindow import BufferTermWindow
+from editor.terminal.CommandBarTermWindow import CommandBarTermWindow
+from editor.terminal.StatusBarTermWindow import StatusBarTermWindow
+from editor.terminal.TabTermWindow import TabTermWindow
 import curses
 import curses.wrapper
 
@@ -27,14 +27,14 @@ class TerminalView(object):
         self.bufferRight = Buffer ()
         
         # Tab setup
-        self.tabsWindow = TabsWindow (['tab test1', 'tab test2'], 1)
+        self.tabsWindow = TabTermWindow (['tab test1', 'tab test2'], 1)
         
         # Buffer windows setup
         self.bufferLayout = HorizontalLayout ()
         
-        self.layoutLeftTop = HorizontalLayout ([BufferWindow (self.bufferLeftTop), StatusWindow (self.bufferLeftTop.statusBar)])
-        self.layoutLeftBottom = HorizontalLayout ([BufferWindow (self.bufferLeftBottom), StatusWindow (self.bufferLeftBottom.statusBar)])
-        self.layoutRight = HorizontalLayout ([BufferWindow (self.bufferRight), StatusWindow (self.bufferRight.statusBar)])
+        self.layoutLeftTop = HorizontalLayout ([BufferTermWindow (self.bufferLeftTop), StatusBarTermWindow (self.bufferLeftTop.statusBar)])
+        self.layoutLeftBottom = HorizontalLayout ([BufferTermWindow (self.bufferLeftBottom), StatusBarTermWindow (self.bufferLeftBottom.statusBar)])
+        self.layoutRight = HorizontalLayout ([BufferTermWindow (self.bufferRight), StatusBarTermWindow (self.bufferRight.statusBar)])
     
         self.horizontalLeft = HorizontalLayout ([self.layoutLeftTop, self.layoutLeftBottom])
         
@@ -44,12 +44,21 @@ class TerminalView(object):
     
         # Command window
         self.commandBar = CommandBar ()
-        self.commandBarWindow = CommandBarWindow (None, 1)
+        self.commandBarWindow = CommandBarTermWindow (None, 1)
  
         self.layout = HorizontalLayout ([self.tabsWindow, self.bufferLayout, self.commandBarWindow])
         
         self.layout.move (0, 0)
         self.layout.resize (self.screenWidth, self.screenHeight)
+       
+        self.bufferLeftTop.text.append ("Line 1")
+        self.bufferLeftTop.text.append ("Line 2")
+        self.bufferLeftTop.text.append ("Line 3")
+        self.bufferLeftTop.text.append ("Line 4")
+        self.bufferLeftTop.text.append ("")
+        
+        self.bufferLeftTop.text.append ('''And the Lord spake, saying, "First shalt thou take out the Holy Pin. Then, shalt thou count to three. No more. No less. Three shalt be the number thou shalt count, and the number of the counting shall be three. Four shalt thou not count, neither count thou two, excepting that thou then proceed to three. Five is right out. Once at the number three, being the third number to be reached, then, lobbest thou thy Holy Hand Grenade of Antioch towards thy foe, who, being naughty in My sight, shall snuff it."''')
+        
         
         #self.resize ()
         self.repaint()
@@ -73,6 +82,7 @@ class TerminalView(object):
     def resize (self):
         (self.screenHeight, self.screenWidth) = self.screen.getmaxyx ()
         self.layout.resize (self.screenWidth, self.screenHeight)
+        
         self.repaint ()
          
     def run (self):

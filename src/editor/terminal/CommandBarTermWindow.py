@@ -6,9 +6,9 @@ Created on Aug 20, 2011
 
 import curses
 from editor.Window import Window
-from editor.TerminalWindow import TerminalWindow
+from editor.terminal.TerminalWindow import TerminalWindow
 
-class CommandBarWindow(TerminalWindow):
+class CommandBarTermWindow (TerminalWindow):
     def __init__(self, model, preferredHeight = 1):
         super().__init__(Window.VARIABLE_DIMENSION, preferredHeight)
         self.model = model
